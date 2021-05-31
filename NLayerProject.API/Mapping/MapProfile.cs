@@ -20,6 +20,9 @@ namespace NLayerProject.API.Mapping
 
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDto, Product>();
+
+            CreateMap<ProductWithCategoryDto, Product>();
+            CreateMap<Product, ProductWithCategoryDto>();
         }
     }
 }
