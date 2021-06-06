@@ -8,6 +8,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using NLayerProject.API.Filters;
 using NLayerProject.Core.Repository;
 using NLayerProject.Core.Services;
 using NLayerProject.Core.UnitOfWorks;
@@ -35,7 +36,7 @@ namespace NLayerProject.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAutoMapper(typeof(Startup));
-
+            services.AddScoped<NotFoundFilter>(); //Because interface implemented in the filter constructor.
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
             services.AddScoped(typeof(IService<>), typeof(Service.Services.Service<>));
             services.AddScoped<ICategoryService, CategoryService>();
@@ -49,7 +50,11 @@ namespace NLayerProject.API
             //    o.MigrationsAssembly("NLayerProject.Data");
             //}));
 
-            services.AddControllers();
+
+            //all action filters
+            services.AddControllers(o => {
+                o.Filters.Add(new ValidationFilter());
+            });
 
             //filters controll
             services.Configure<ApiBehaviorOptions>(options =>
