@@ -50,6 +50,13 @@ namespace NLayerProject.API
             //}));
 
             services.AddControllers();
+
+            //filters controll
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true;
+            });
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "NLayerProject.API", Version = "v1" });
