@@ -1,22 +1,12 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using NLayerProject.Core.Repository;
-using NLayerProject.Core.Services;
-using NLayerProject.Core.UnitOfWorks;
-using NLayerProject.Data;
-using NLayerProject.Data.Repositories;
-using NLayerProject.Data.UnitOfWorks;
-using NLayerProject.Service.Services;
+using NLayerProject.UI.ApiService;
 using NLayerProject.UI.Filters;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace NLayerProject.UI
 {
@@ -32,17 +22,12 @@ namespace NLayerProject.UI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpClient<CategoryApiService>(options => {
+                options.BaseAddress = new Uri(Configuration["baseUrl"]);
+            });
             services.AddControllersWithViews();
             services.AddScoped<NotFoundFilter>();
             services.AddAutoMapper(typeof(Startup));
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-            services.AddScoped(typeof(IService<>), typeof(Service.Services.Service<>));
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IProductService, ProductService>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-
-            services.AddDbContext<ApplicationDbContext>(opt =>
-               opt.UseSqlServer(Configuration.GetConnectionString("SqlConStr")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
