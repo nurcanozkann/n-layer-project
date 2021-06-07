@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\NLayerProject.Service\NLayerProject.Service.csproj" />
+    <Folder Include="NewFolder\" />
   </ItemGroup>
 
 </Project>
